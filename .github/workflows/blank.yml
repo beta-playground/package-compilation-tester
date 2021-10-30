@@ -1,0 +1,27 @@
+name: Rust
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    - cron:  '0,10,20,30,40,50 * * * *'
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        runs-on: ["ubuntu-20.04", "ubuntu-18.04"]
+    runs-on: ${{ matrix.runs-on }}
+    steps:
+    - uses: actions/checkout@v2
+    - name: rust-toolchain
+      uses: actions-rs/toolchain@v1.0.6
+      with:
+        toolchain: stable
+    - name: Build cproxy
+      run: cargo install cproxyi
